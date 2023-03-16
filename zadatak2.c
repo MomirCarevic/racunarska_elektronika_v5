@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
 	int fd = -1, ret; 
 	char *tmp1, tmp2[10],
 	ch='t'; 
-	char devname_head[50] = "/sys/devices/w1_bus_master1/28-00000"; 
+	char devname_head[50] = "/sys/bus/w1/devices/28-00000"; 
 
 	char devname_end[10] = "/w1_slave"; 
 	char dev_name[100]; 
@@ -23,6 +23,11 @@ int main(int argc, char *argv[])
 	int integer, decimal; 
 	char buffer[100]; 
 	int i,j; 
+	
+	pinMode(25,OUTPUT);
+
+while(1)
+{
 
 	strcpy(dev_name, devname_head); 
 	strcat(dev_name, argv[1]); 
@@ -33,10 +38,7 @@ int main(int argc, char *argv[])
         	exit(1); 
     	} 
 
-	pinMode(LED[25],OUTPUT);
 
-	while(1)
-	{
 
 	    	ret = read(fd, buffer, sizeof(buffer)); 
 	
@@ -54,16 +56,16 @@ int main(int argc, char *argv[])
 
     		printf("Temperatura je %d.%d\n", integer,decimal); 
 
-		if(decimal > prag)
+		if(value > prag)
 		{
-			digitalWrite(LED[25],1);
+			digitalWrite(25,1);
 			delay(200);
-			digitalWrite(LED[25],0);
+			digitalWrite(25,0);
 			delay(200);
 		}
 		else
 		{
-			digitalWrite(LED[25],0);
+			digitalWrite(25,0);
 		}
 		delay(300);
     	}
